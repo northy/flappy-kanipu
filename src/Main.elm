@@ -21,7 +21,7 @@ noise : Float -> Float -> Float
 noise =
     Simplex.fractal2d { scale = 400.0, steps = 50, stepSize = 1.0, persistence = 20000.0 } permTable
 
-getNoise : Float -> Float
+getNoise : Number -> Float
 getNoise x =
     noise (x * 123) (x*12)
 
@@ -59,57 +59,75 @@ initRun =
             , vy = 0
             }
         , score = 0
-        , iterationCount = 0
-        , pipes = []
+        , iterationCount = 1000
+        , pipes = 
+            [ Pipe 1050 ((getNoise (toFloat 0) * 300))
+            , Pipe 1800 ((getNoise (toFloat 250) * 300))
+            , Pipe 2550 ((getNoise (toFloat 500) * 300))
+            , Pipe 3300 ((getNoise (toFloat 750) * 300))
+            ]
         }
 
 -- UPDATE
 
 press : Computer -> Bool
 press computer =
-    computer.keyboard.up || computer.mouse.down
+    computer.keyboard.space || computer.mouse.down || computer.keyboard.up
 
-checkPipes : Computer -> Int -> List Pipe -> List Pipe
-checkPipes computer itc pipes =
+checkPipes : Computer -> List Pipe -> List Pipe
+checkPipes computer pipes =
     let
         l = computer.screen.left
     in
-    List.filter (\x -> x.x > (l - 60)) pipes
-        |> (\list ->
-            list ++ (List.range 0 (5 - (List.length list))
-                |> List.map
-                    (\x ->
-                        Pipe ((5 - toFloat x) * 750) ((getNoise (toFloat (x + itc))) * 250)
-                    )
-                )
-        )
+        List.filter (\x -> x.x > (l - 60)) pipes
+
+addPipes : Int -> List Pipe -> List Pipe
+addPipes itc pipes =
+    if List.length pipes < 4 then
+        pipes ++ [ Pipe 2250 ((getNoise (toFloat itc)) * 250) ]
+    else pipes
+
+checkPipeCollision : Computer -> Patra -> List Pipe -> Bool
+checkPipeCollision computer patra pipes = 
+    let
+        l = computer.screen.left
+        gate = 120
+        lastpipe = List.head pipes
+    in
+        case lastpipe of
+            Just pipe ->
+                pipe.x <= l + 160 && (patra.y >= (pipe.height + gate - 50) || patra.y <= (pipe.height - gate + 50))
+            _ -> False
 
 update : Computer -> Model -> Model
 update computer model =
     case model of
         Running run ->
             let
-                bot = computer.screen.bottom+120
+                bot = computer.screen.bottom+100
                 top = (computer.screen.top - 70)
                 dt = 1.666
                 vy =
                     if press computer && (run.patra.vy<2.5) then 5
                     else
-                        if run.patra.y>bot then run.patra.vy - dt / 8 else 0
-                y = max bot (min top run.patra.y + dt * vy)
+                        if run.patra.y>(bot) then run.patra.vy - dt / 8 else 0
+                y = max (bot) (min top run.patra.y + dt * vy)
 
                 speed = (10 * computer.screen.width) / 1000
-                pipes =  run.pipes
+                list = run.pipes
                     |> List.map (\pipe -> {pipe | x = pipe.x - speed})
-                    |> checkPipes computer run.iterationCount
+                    |> checkPipes computer
+                score =  if List.length list < 4 then run.score + 1 else run.score
+                pipes = addPipes run.iterationCount list
+                collision = y == (bot) || checkPipeCollision computer run.patra run.pipes
             in
-            if y /= bot then
+            if not collision then
                 Running
                 { patra =
                     { y = y
                     , vy = vy
                     }
-                , score = run.score
+                , score = score
                 , iterationCount = run.iterationCount+1
                 , pipes = pipes
                 }
@@ -127,14 +145,12 @@ view computer model =
     case model of
         Running run ->
             let
-                --w = computer.screen.width
-                --h = computer.screen.height
-                --b = computer.screen.bottom
                 l = computer.screen.left
             in
                 List.map (\pipe -> viewPipes computer pipe.x pipe.height) run.pipes ++
                 [ image 100 100 (toGif run.patra)
                     |> move (l+60) (run.patra.y)
+                --, words black (String.fromInt run.iterationCount)
                 , viewPoints computer run.score
                 ]
         Waiting ->
@@ -155,16 +171,16 @@ viewPipes computer x y =
     let
         t = computer.screen.top
         b = computer.screen.bottom
-        gate = (1000 * 35) / computer.screen.width
+        gate = 120 --(1600 * 60) / computer.screen.height
     in
     group
     -- top pipe
     [ image 160 800 "public/img/pipe.png"
-        |> move x (y + t + gate)
         |> rotate 180
+        |> move x (t - 80 + y + gate)
     -- bottom pipe
     , image 160 800 "public/img/pipe.png"
-        |> move x (y + b - gate)
+        |> move x (b + 80 + y - gate)
     ]
 
 viewBackground : Computer -> List Shape
