@@ -1,12 +1,29 @@
 module Main exposing (main)
 
 import Playground exposing (..)
-import Html.Attributes exposing (shape)
+import Simplex exposing (PermutationTable)
 
 -- MAIN
 
 main =
     game view update init
+
+
+-- RNG
+
+--Create a permutation table, using 42 as the seed
+permTable : PermutationTable
+permTable =
+    Simplex.permutationTableFromInt 42
+
+-- Create a function for 2D fractal noise
+noise : Float -> Float -> Float
+noise =
+    Simplex.fractal2d { scale = 400.0, steps = 50, stepSize = 1.0, persistence = 20000.0 } permTable
+
+getNoise : Float -> Float
+getNoise x =
+    noise (x * 123) (x*12)
 
 -- MODEL
 
@@ -17,7 +34,14 @@ type Model
     | Running
         { patra : Patra
         , score : Int
+        , iterationCount : Int
+        , pipes : List Pipe
         }
+
+type alias Pipe =
+    { x : Number
+    , height : Number
+    }
 
 type alias Patra =
     { y : Float
@@ -35,9 +59,30 @@ initRun =
             , vy = 0
             }
         , score = 0
+        , iterationCount = 0
+        , pipes = []
         }
 
 -- UPDATE
+
+press : Computer -> Bool
+press computer =
+    computer.keyboard.up || computer.mouse.down
+
+checkPipes : Computer -> Int -> List Pipe -> List Pipe
+checkPipes computer itc pipes =
+    let
+        l = computer.screen.left
+    in
+    List.filter (\x -> x.x > (l - 60)) pipes
+        |> (\list ->
+            list ++ (List.range 0 (5 - (List.length list))
+                |> List.map
+                    (\x ->
+                        Pipe ((5 - toFloat x) * 750) ((getNoise (toFloat (x + itc))) * 250)
+                    )
+                )
+        )
 
 update : Computer -> Model -> Model
 update computer model =
@@ -48,10 +93,15 @@ update computer model =
                 top = (computer.screen.top - 70)
                 dt = 1.666
                 vy =
-                    if computer.keyboard.up && (run.patra.vy<0) then 5
+                    if press computer && (run.patra.vy<2.5) then 5
                     else
                         if run.patra.y>bot then run.patra.vy - dt / 8 else 0
                 y = max bot (min top run.patra.y + dt * vy)
+
+                speed = (10 * computer.screen.width) / 1000
+                pipes =  run.pipes
+                    |> List.map (\pipe -> {pipe | x = pipe.x - speed})
+                    |> checkPipes computer run.iterationCount
             in
             if y /= bot then
                 Running
@@ -60,14 +110,14 @@ update computer model =
                     , vy = vy
                     }
                 , score = run.score
+                , iterationCount = run.iterationCount+1
+                , pipes = pipes
                 }
             else
                 GameOver
                 { score = run.score }
-        Waiting ->
-            if computer.keyboard.up then initRun else model
-        GameOver _ ->
-            if computer.keyboard.up then initRun else model
+        _ ->
+            if press computer then initRun else model
 
 -- VIEW
 
@@ -82,24 +132,40 @@ view computer model =
                 --b = computer.screen.bottom
                 l = computer.screen.left
             in
-                [ image 140 140 (toGif run.patra)
-                        |> move (l+60) (run.patra.y)
+                List.map (\pipe -> viewPipes computer pipe.x pipe.height) run.pipes ++
+                [ image 100 100 (toGif run.patra)
+                    |> move (l+60) (run.patra.y)
                 , viewPoints computer run.score
                 ]
         Waiting ->
             
-            [ viewStatusText "こんばんわんわん!"
-                    |> moveY 20
-            ]
+            [ viewStatusText computer.screen.width "こんばんわんわん!" ]
         GameOver info ->
-            [ viewStatusText "ゲームオーバー!"
-                    |> moveY 20
+            [ viewStatusText computer.screen.width "ゲームオーバー!"
+                |> moveY 20
             , viewPoints computer info.score
             ]
 
 toGif : Patra -> String
 toGif _ =
     "public/img/patra.png"
+
+viewPipes : Computer -> Number -> Number -> Shape
+viewPipes computer x y =
+    let
+        t = computer.screen.top
+        b = computer.screen.bottom
+        gate = (1000 * 35) / computer.screen.width
+    in
+    group
+    -- top pipe
+    [ image 160 800 "public/img/pipe.png"
+        |> move x (y + t + gate)
+        |> rotate 180
+    -- bottom pipe
+    , image 160 800 "public/img/pipe.png"
+        |> move x (y + b - gate)
+    ]
 
 viewBackground : Computer -> List Shape
 viewBackground computer =
@@ -111,18 +177,31 @@ viewBackground computer =
         [
         rectangle (rgb 174 238 238) w h
         , rectangle (rgb 74 163 41) w 100
-                |> moveY b
+            |> moveY b
         ]
 
-viewStatusText : String -> Shape
-viewStatusText status =
+viewStatusText : Number -> String -> Shape
+viewStatusText width status =
     group
-    [ (words black status)
-            |> scale 3
-    , (words black "続けるには上矢印キーを押してください...")
+    [ image 200 200 "public/img/kanikama.png"
+        |> moveY 150
+    , (words black status)
+        |> scale 3
+    , if width>=1000 then
+        (words black "続けるには上矢印キーを押してください...")
             |> scale 3
             |> moveY -70
+        else
+            group
+            [ (words black "続けるには上矢印キー")
+                |> scale 3
+                |> moveY -70
+            , (words black "を押してください...")
+                |> scale 3
+                |> moveY -140
+            ]
     ]
+        |> moveY (if width>=1000 then -35 else 0)
 
 viewPoints : Computer -> Int -> Shape
 viewPoints computer points =
@@ -138,5 +217,3 @@ viewPoints computer points =
         ]
             |> move (r - 150) (b + 50)
             |> scale 2
-        
-        
