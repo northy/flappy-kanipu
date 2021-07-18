@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no">
     <title>Main</title>
     <style>body { padding: 0; margin: 0; }</style>
     <link rel="stylesheet" href="public/css/styles.css">
@@ -19,6 +20,7 @@
         var touches = event.changedTouches,
             first = touches[0],
             type = "";
+        
         switch(event.type)
         {
             case "touchstart": type = "mousedown"; break;
@@ -27,23 +29,36 @@
             default:           return;
         }
 
+        // initMouseEvent(type, canBubble, cancelable, view, clickCount, 
+        //                screenX, screenY, clientX, clientY, ctrlKey, 
+        //                altKey, shiftKey, metaKey, button, relatedTarget);
+
         var simulatedEvent = document.createEvent("MouseEvent");
         simulatedEvent.initMouseEvent(type, true, true, window, 1, 
-                                    first.screenX, first.screenY, 
-                                    first.clientX, first.clientY, false, 
-                                    false, false, false, 0, null);
+                                      first.screenX, first.screenY, 
+                                      first.clientX, first.clientY, false, 
+                                      false, false, false, 0/*left*/, null);
 
         first.target.dispatchEvent(simulatedEvent);
+        //event.preventDefault();
+    }
+    
+    const handleContextMenu = (event) => {
         event.preventDefault();
+
+        var simulatedEvent = document.createEvent("MouseEvent");
+        simulatedEvent.initMouseEvent("mouseup", true, true, window, 1, 
+                                      0, 0, 0, 0, false, 
+                                      false, false, false, 0/*left*/, null);
+        document.dispatchEvent(simulatedEvent);
     }
 
-    function init() 
-    {
-        document.addEventListener("touchstart", touchHandler, true);
-        document.addEventListener("touchmove", touchHandler, true);
-        document.addEventListener("touchend", touchHandler, true);
-        document.addEventListener("touchcancel", touchHandler, true);    
-    }
+    document.addEventListener('contextmenu', event => {handleContextMenu(event)});
+
+    document.addEventListener("touchstart", touchHandler, true);
+    document.addEventListener("touchmove", touchHandler, true);
+    document.addEventListener("touchend", touchHandler, true);
+    document.addEventListener("touchcancel", touchHandler, true);
 
     var app = Elm.Main.init({
         node: document.getElementById('elm')

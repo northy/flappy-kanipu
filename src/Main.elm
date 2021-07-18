@@ -154,7 +154,7 @@ view computer model =
                 --, words black (String.fromInt run.iterationCount)
                 , viewPoints computer run.score
                 ]
-        Loading load ->
+        Loading _ ->
             [ words black "読み込み中"
                 |> scale 3
             , group 
