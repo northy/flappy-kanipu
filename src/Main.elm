@@ -26,6 +26,8 @@ getNoise x =
 
 type Model 
     = Waiting
+    | Loading
+        { iterationCount : Int }
     | GameOver
         { score : Int }
     | Running
@@ -46,7 +48,7 @@ type alias Patra =
     }
 
 init : Model
-init = Waiting
+init = Loading { iterationCount = 0 }
 
 initRun : Model
 initRun =
@@ -131,6 +133,8 @@ update computer model =
             else
                 GameOver
                 { score = run.score }
+        Loading load ->
+            if load.iterationCount == 50 then Waiting else Loading {load | iterationCount=load.iterationCount+1}
         _ ->
             if press computer then initRun else model
 
@@ -150,8 +154,19 @@ view computer model =
                 --, words black (String.fromInt run.iterationCount)
                 , viewPoints computer run.score
                 ]
+        Loading load ->
+            [ words black "読み込み中"
+                |> scale 3
+            , group 
+                [image 1 1 "public/img/patra-up.png"
+                , image 1 1 "public/img/patra-down.png"
+                , image 1 1 "public/img/pipe.png"
+                , image 1 1 "public/img/kanipu.png"
+                , image 1 1 "public/img/kanikama.png"
+                ]
+                |> moveY -500
+            ]
         Waiting ->
-            
             [ viewStatusText computer.screen.width "こんばんわんわん!" ]
         GameOver info ->
             [ viewStatusText computer.screen.width "ゲームオーバー!"
