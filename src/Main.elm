@@ -8,15 +8,12 @@ import Simplex exposing (PermutationTable)
 main =
     game view update init
 
-
 -- RNG
 
---Create a permutation table, using 42 as the seed
 permTable : PermutationTable
 permTable =
     Simplex.permutationTableFromInt 42
 
--- Create a function for 2D fractal noise
 noise : Float -> Float -> Float
 noise =
     Simplex.fractal2d { scale = 400.0, steps = 50, stepSize = 1.0, persistence = 20000.0 } permTable
@@ -61,10 +58,10 @@ initRun =
         , score = 0
         , iterationCount = 1000
         , pipes = 
-            [ Pipe 1050 ((getNoise (toFloat 0) * 300))
-            , Pipe 1800 ((getNoise (toFloat 250) * 300))
-            , Pipe 2550 ((getNoise (toFloat 500) * 300))
-            , Pipe 3300 ((getNoise (toFloat 750) * 300))
+            [ Pipe 1050 ((getNoise (toFloat 250) * 300))
+            , Pipe 1800 ((getNoise (toFloat 500) * 300))
+            , Pipe 2550 ((getNoise (toFloat 750) * 300))
+            , Pipe 3300 ((getNoise (toFloat 1000) * 300))
             ]
         }
 
@@ -163,8 +160,11 @@ view computer model =
             ]
 
 toGif : Patra -> String
-toGif _ =
-    "public/img/patra.png"
+toGif patra =
+    if patra.vy >= 3 then
+        "public/img/patra-up.png"
+    else
+        "public/img/patra-down.png"
 
 viewPipes : Computer -> Number -> Number -> Shape
 viewPipes computer x y =
