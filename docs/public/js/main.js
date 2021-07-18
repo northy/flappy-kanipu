@@ -7819,7 +7819,7 @@ var $author$project$Main$view = F2(
 							A2(
 							$evancz$elm_playground$Playground$scale,
 							A2($author$project$Main$scaleY, computer, 3),
-							A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '画面を回してください'))
+							A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '画面を回して'))
 						]);
 				}
 			}());

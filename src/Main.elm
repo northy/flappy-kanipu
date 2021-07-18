@@ -206,7 +206,7 @@ view computer model =
     else
         [ image (scaleX computer 200) (scaleY computer 200) "public/img/rotate.png"
             |> moveY (scaleY computer 150)
-        , words black "画面を回してください"
+        , words black "画面を回して"
             |> scale (scaleY computer 3)
         ]
 
