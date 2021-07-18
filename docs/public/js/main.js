@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ah.M === region.am.M)
+	if (region.ah.O === region.am.O)
 	{
-		return 'on line ' + region.ah.M;
+		return 'on line ' + region.ah.O;
 	}
-	return 'on lines ' + region.ah.M + ' through ' + region.am.M;
+	return 'on lines ' + region.ah.O + ' through ' + region.am.O;
 }
 
 
@@ -2704,7 +2704,7 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		r: func(record.r),
+		s: func(record.s),
 		ai: record.ai,
 		ae: record.ae
 	}
@@ -2974,7 +2974,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.r;
+		var message = !tag ? value : tag < 3 ? value.a : value.s;
 		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ai;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
@@ -4234,10 +4234,10 @@ function _Browser_getViewport()
 	return {
 		aE: _Browser_getScene(),
 		aK: {
-			J: _Browser_window.pageXOffset,
-			v: _Browser_window.pageYOffset,
+			L: _Browser_window.pageXOffset,
+			w: _Browser_window.pageYOffset,
 			Y: _Browser_doc.documentElement.clientWidth,
-			L: _Browser_doc.documentElement.clientHeight
+			N: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4248,7 +4248,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		Y: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		L: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		N: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4273,13 +4273,13 @@ function _Browser_getViewportOf(id)
 		return {
 			aE: {
 				Y: node.scrollWidth,
-				L: node.scrollHeight
+				N: node.scrollHeight
 			},
 			aK: {
-				J: node.scrollLeft,
-				v: node.scrollTop,
+				L: node.scrollLeft,
+				w: node.scrollTop,
 				Y: node.clientWidth,
-				L: node.clientHeight
+				N: node.clientHeight
 			}
 		};
 	});
@@ -4311,16 +4311,16 @@ function _Browser_getElement(id)
 		return {
 			aE: _Browser_getScene(),
 			aK: {
-				J: x,
-				v: y,
+				L: x,
+				w: y,
 				Y: _Browser_doc.documentElement.clientWidth,
-				L: _Browser_doc.documentElement.clientHeight
+				N: _Browser_doc.documentElement.clientHeight
 			},
 			aQ: {
-				J: x + rect.left,
-				v: y + rect.top,
+				L: x + rect.left,
+				w: y + rect.top,
 				Y: rect.width,
-				L: rect.height
+				N: rect.height
 			}
 		};
 	});
@@ -5815,7 +5815,7 @@ var $evancz$elm_playground$Playground$gameSubscriptions = $elm$core$Platform$Sub
 		]));
 var $evancz$elm_playground$Playground$Mouse = F4(
 	function (x, y, down, click) {
-		return {_: click, aP: down, J: x, v: y};
+		return {_: click, aP: down, L: x, w: y};
 	});
 var $evancz$elm_playground$Playground$Time = $elm$core$Basics$identity;
 var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
@@ -5837,14 +5837,14 @@ var $evancz$elm_playground$Playground$mouseMove = F3(
 	function (x, y, mouse) {
 		return _Utils_update(
 			mouse,
-			{J: x, v: y});
+			{L: x, w: y});
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $evancz$elm_playground$Playground$toScreen = F2(
 	function (width, height) {
-		return {V: (-height) / 2, L: height, ab: (-width) / 2, a$: width / 2, aH: height / 2, Y: width};
+		return {W: (-height) / 2, N: height, ab: (-width) / 2, a$: width / 2, aH: height / 2, Y: width};
 	});
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
@@ -6289,7 +6289,7 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					_Utils_update(
 						computer,
 						{
-							f: A2($evancz$elm_playground$Playground$toScreen, viewport.Y, viewport.L)
+							f: A2($evancz$elm_playground$Playground$toScreen, viewport.Y, viewport.N)
 						}));
 			case 3:
 				var w = msg.a;
@@ -6360,7 +6360,7 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 						computer,
 						{
 							as: $evancz$elm_playground$Playground$emptyKeyboard,
-							aU: A4($evancz$elm_playground$Playground$Mouse, computer.aU.J, computer.aU.v, false, false)
+							aU: A4($evancz$elm_playground$Playground$Mouse, computer.aU.L, computer.aU.w, false, false)
 						}));
 		}
 	});
@@ -6674,10 +6674,10 @@ var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $evancz$elm_playground$Playground$render = F2(
 	function (screen, shapes) {
-		var y = $elm$core$String$fromFloat(screen.V);
+		var y = $elm$core$String$fromFloat(screen.W);
 		var x = $elm$core$String$fromFloat(screen.ab);
 		var w = $elm$core$String$fromFloat(screen.Y);
-		var h = $elm$core$String$fromFloat(screen.L);
+		var h = $elm$core$String$fromFloat(screen.N);
 		return A2(
 			$elm$svg$Svg$svg,
 			_List_fromArray(
@@ -6729,17 +6729,21 @@ var $evancz$elm_playground$Playground$game = F3(
 		return $elm$browser$Browser$document(
 			{aq: init, a4: subscriptions, aI: update, aJ: view});
 	});
-var $author$project$Main$Waiting = {$: 0};
-var $author$project$Main$init = $author$project$Main$Waiting;
-var $author$project$Main$GameOver = function (a) {
+var $author$project$Main$Loading = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$Running = function (a) {
+var $author$project$Main$init = $author$project$Main$Loading(
+	{r: 0});
+var $author$project$Main$GameOver = function (a) {
 	return {$: 2, a: a};
 };
+var $author$project$Main$Running = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Main$Waiting = {$: 0};
 var $author$project$Main$Pipe = F2(
 	function (x, height) {
-		return {L: height, J: x};
+		return {N: height, L: x};
 	});
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Basics$sqrt = _Basics_sqrt;
@@ -6854,8 +6858,8 @@ var $Herteby$simplex_noise$Simplex$getN2d = F6(
 	});
 var $Herteby$simplex_noise$Simplex$noise2d = F3(
 	function (_v0, xin, yin) {
-		var perm = _v0.N;
-		var permMod12 = _v0.O;
+		var perm = _v0.P;
+		var permMod12 = _v0.Q;
 		var s = (xin + yin) * $Herteby$simplex_noise$Simplex$f2;
 		var j = $elm$core$Basics$floor(yin + s);
 		var jj = j & 255;
@@ -7287,8 +7291,8 @@ var $Herteby$simplex_noise$Simplex$permutationTableGenerator = A2(
 	function (array) {
 		var perm = A2($elm$core$Array$append, array, array);
 		return {
-			N: perm,
-			O: A2(
+			P: perm,
+			Q: A2(
 				$elm$core$Array$map,
 				$elm$core$Basics$remainderBy(12),
 				perm)
@@ -7339,7 +7343,7 @@ var $author$project$Main$checkPipeCollision = F3(
 		var gate = 120;
 		if (!lastpipe.$) {
 			var pipe = lastpipe.a;
-			return (_Utils_cmp(pipe.J, l + 160) < 1) && ((_Utils_cmp(patra.v, (pipe.L + gate) - 50) > -1) || (_Utils_cmp(patra.v, (pipe.L - gate) + 50) < 1));
+			return (_Utils_cmp(pipe.L, l + 160) < 1) && ((_Utils_cmp(patra.w, (pipe.N + gate) - 50) > -1) || (_Utils_cmp(patra.w, (pipe.N - gate) + 50) < 1));
 		} else {
 			return false;
 		}
@@ -7361,34 +7365,34 @@ var $author$project$Main$checkPipes = F2(
 		return A2(
 			$elm$core$List$filter,
 			function (x) {
-				return _Utils_cmp(x.J, l - 60) > 0;
+				return _Utils_cmp(x.L, l - 60) > 0;
 			},
 			pipes);
 	});
 var $author$project$Main$initRun = $author$project$Main$Running(
 	{
-		W: 1000,
-		o: {U: 0, v: 0},
-		P: _List_fromArray(
+		r: 1000,
+		o: {K: 0, w: 0},
+		R: _List_fromArray(
 			[
 				A2(
 				$author$project$Main$Pipe,
 				1050,
-				$author$project$Main$getNoise(0) * 300),
-				A2(
-				$author$project$Main$Pipe,
-				1800,
 				$author$project$Main$getNoise(250) * 300),
 				A2(
 				$author$project$Main$Pipe,
-				2550,
+				1800,
 				$author$project$Main$getNoise(500) * 300),
 				A2(
 				$author$project$Main$Pipe,
+				2550,
+				$author$project$Main$getNoise(750) * 300),
+				A2(
+				$author$project$Main$Pipe,
 				3300,
-				$author$project$Main$getNoise(750) * 300)
+				$author$project$Main$getNoise(1000) * 300)
 			]),
-		t: 0
+		u: 0
 	});
 var $elm$core$Basics$min = F2(
 	function (x, y) {
@@ -7400,50 +7404,74 @@ var $author$project$Main$press = function (computer) {
 };
 var $author$project$Main$update = F2(
 	function (computer, model) {
-		if (model.$ === 2) {
-			var run = model.a;
-			var top = computer.f.aH - 70;
-			var speed = (10 * computer.f.Y) / 1000;
-			var list = A2(
-				$author$project$Main$checkPipes,
-				computer,
-				A2(
-					$elm$core$List$map,
-					function (pipe) {
-						return _Utils_update(
-							pipe,
-							{J: pipe.J - speed});
-					},
-					run.P));
-			var pipes = A2($author$project$Main$addPipes, run.W, list);
-			var score = ($elm$core$List$length(list) < 4) ? (run.t + 1) : run.t;
-			var dt = 1.666;
-			var bot = computer.f.V + 100;
-			var vy = ($author$project$Main$press(computer) && (run.o.U < 2.5)) ? 5 : ((_Utils_cmp(run.o.v, bot) > 0) ? (run.o.U - (dt / 8)) : 0);
-			var y = A2(
-				$elm$core$Basics$max,
-				bot,
-				A2($elm$core$Basics$min, top, run.o.v) + (dt * vy));
-			var collision = _Utils_eq(y, bot) || A3($author$project$Main$checkPipeCollision, computer, run.o, run.P);
-			return (!collision) ? $author$project$Main$Running(
-				{
-					W: run.W + 1,
-					o: {U: vy, v: y},
-					P: pipes,
-					t: score
-				}) : $author$project$Main$GameOver(
-				{t: run.t});
-		} else {
-			return $author$project$Main$press(computer) ? $author$project$Main$initRun : model;
+		switch (model.$) {
+			case 3:
+				var run = model.a;
+				var top = computer.f.aH - 70;
+				var speed = (10 * computer.f.Y) / 1000;
+				var list = A2(
+					$author$project$Main$checkPipes,
+					computer,
+					A2(
+						$elm$core$List$map,
+						function (pipe) {
+							return _Utils_update(
+								pipe,
+								{L: pipe.L - speed});
+						},
+						run.R));
+				var pipes = A2($author$project$Main$addPipes, run.r, list);
+				var score = ($elm$core$List$length(list) < 4) ? (run.u + 1) : run.u;
+				var dt = 1.666;
+				var bot = computer.f.W + 100;
+				var vy = ($author$project$Main$press(computer) && (run.o.K < 2.5)) ? 5 : ((_Utils_cmp(run.o.w, bot) > 0) ? (run.o.K - (dt / 8)) : 0);
+				var y = A2(
+					$elm$core$Basics$max,
+					bot,
+					A2($elm$core$Basics$min, top, run.o.w) + (dt * vy));
+				var collision = _Utils_eq(y, bot) || A3($author$project$Main$checkPipeCollision, computer, run.o, run.R);
+				return (!collision) ? $author$project$Main$Running(
+					{
+						r: run.r + 1,
+						o: {K: vy, w: y},
+						R: pipes,
+						u: score
+					}) : $author$project$Main$GameOver(
+					{u: run.u});
+			case 1:
+				var load = model.a;
+				return (load.r === 50) ? $author$project$Main$Waiting : $author$project$Main$Loading(
+					_Utils_update(
+						load,
+						{r: load.r + 1}));
+			default:
+				return $author$project$Main$press(computer) ? $author$project$Main$initRun : model;
 		}
 	});
-var $evancz$elm_playground$Playground$Image = F3(
-	function (a, b, c) {
-		return {$: 5, a: a, b: b, c: c};
-	});
+var $evancz$elm_playground$Playground$Hex = function (a) {
+	return {$: 0, a: a};
+};
+var $evancz$elm_playground$Playground$black = $evancz$elm_playground$Playground$Hex('#000000');
+var $evancz$elm_playground$Playground$Group = function (a) {
+	return {$: 7, a: a};
+};
 var $evancz$elm_playground$Playground$Shape = F6(
 	function (a, b, c, d, e, f) {
 		return {$: 0, a: a, b: b, c: c, d: d, e: e, f: f};
+	});
+var $evancz$elm_playground$Playground$group = function (shapes) {
+	return A6(
+		$evancz$elm_playground$Playground$Shape,
+		0,
+		0,
+		0,
+		1,
+		1,
+		$evancz$elm_playground$Playground$Group(shapes));
+};
+var $evancz$elm_playground$Playground$Image = F3(
+	function (a, b, c) {
+		return {$: 5, a: a, b: b, c: c};
 	});
 var $evancz$elm_playground$Playground$image = F3(
 	function (w, h, src) {
@@ -7476,8 +7504,18 @@ var $evancz$elm_playground$Playground$moveY = F2(
 		var f = _v0.f;
 		return A6($evancz$elm_playground$Playground$Shape, x, y + dy, a, s, o, f);
 	});
-var $author$project$Main$toGif = function (_v0) {
-	return 'public/img/patra.png';
+var $evancz$elm_playground$Playground$scale = F2(
+	function (ns, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		var a = _v0.c;
+		var s = _v0.d;
+		var o = _v0.e;
+		var f = _v0.f;
+		return A6($evancz$elm_playground$Playground$Shape, x, y, a, s * ns, o, f);
+	});
+var $author$project$Main$toGif = function (patra) {
+	return (patra.K >= 3) ? 'public/img/patra-up.png' : 'public/img/patra-down.png';
 };
 var $evancz$elm_playground$Playground$Rectangle = F3(
 	function (a, b, c) {
@@ -7516,8 +7554,8 @@ var $evancz$elm_playground$Playground$rgb = F3(
 	});
 var $author$project$Main$viewBackground = function (computer) {
 	var w = computer.f.Y;
-	var h = computer.f.L;
-	var b = computer.f.V;
+	var h = computer.f.N;
+	var b = computer.f.W;
 	return _List_fromArray(
 		[
 			A3(
@@ -7535,19 +7573,6 @@ var $author$project$Main$viewBackground = function (computer) {
 				100))
 		]);
 };
-var $evancz$elm_playground$Playground$Group = function (a) {
-	return {$: 7, a: a};
-};
-var $evancz$elm_playground$Playground$group = function (shapes) {
-	return A6(
-		$evancz$elm_playground$Playground$Shape,
-		0,
-		0,
-		0,
-		1,
-		1,
-		$evancz$elm_playground$Playground$Group(shapes));
-};
 var $evancz$elm_playground$Playground$rotate = F2(
 	function (da, _v0) {
 		var x = _v0.a;
@@ -7562,7 +7587,7 @@ var $author$project$Main$viewPipes = F3(
 	function (computer, x, y) {
 		var t = computer.f.aH;
 		var gate = 120;
-		var b = computer.f.V;
+		var b = computer.f.W;
 		return $evancz$elm_playground$Playground$group(
 			_List_fromArray(
 				[
@@ -7581,10 +7606,6 @@ var $author$project$Main$viewPipes = F3(
 					A3($evancz$elm_playground$Playground$image, 160, 800, 'public/img/pipe.png'))
 				]));
 	});
-var $evancz$elm_playground$Playground$Hex = function (a) {
-	return {$: 0, a: a};
-};
-var $evancz$elm_playground$Playground$black = $evancz$elm_playground$Playground$Hex('#000000');
 var $evancz$elm_playground$Playground$moveDown = F2(
 	function (dy, _v0) {
 		var x = _v0.a;
@@ -7606,16 +7627,6 @@ var $evancz$elm_playground$Playground$moveX = F2(
 		return A6($evancz$elm_playground$Playground$Shape, x + dx, y, a, s, o, f);
 	});
 var $evancz$elm_playground$Playground$moveRight = $evancz$elm_playground$Playground$moveX;
-var $evancz$elm_playground$Playground$scale = F2(
-	function (ns, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		var a = _v0.c;
-		var s = _v0.d;
-		var o = _v0.e;
-		var f = _v0.f;
-		return A6($evancz$elm_playground$Playground$Shape, x, y, a, s * ns, o, f);
-	});
 var $evancz$elm_playground$Playground$Words = F2(
 	function (a, b) {
 		return {$: 6, a: a, b: b};
@@ -7634,7 +7645,7 @@ var $evancz$elm_playground$Playground$words = F2(
 var $author$project$Main$viewPoints = F2(
 	function (computer, points) {
 		var r = computer.f.a$;
-		var b = computer.f.V;
+		var b = computer.f.W;
 		return A2(
 			$evancz$elm_playground$Playground$scale,
 			2,
@@ -7706,29 +7717,50 @@ var $author$project$Main$view = F2(
 			$author$project$Main$viewBackground(computer),
 			function () {
 				switch (model.$) {
-					case 2:
+					case 3:
 						var run = model.a;
 						var l = computer.f.ab;
 						return _Utils_ap(
 							A2(
 								$elm$core$List$map,
 								function (pipe) {
-									return A3($author$project$Main$viewPipes, computer, pipe.J, pipe.L);
+									return A3($author$project$Main$viewPipes, computer, pipe.L, pipe.N);
 								},
-								run.P),
+								run.R),
 							_List_fromArray(
 								[
 									A3(
 									$evancz$elm_playground$Playground$move,
 									l + 60,
-									run.o.v,
+									run.o.w,
 									A3(
 										$evancz$elm_playground$Playground$image,
 										100,
 										100,
 										$author$project$Main$toGif(run.o))),
-									A2($author$project$Main$viewPoints, computer, run.t)
+									A2($author$project$Main$viewPoints, computer, run.u)
 								]));
+					case 1:
+						var load = model.a;
+						return _List_fromArray(
+							[
+								A2(
+								$evancz$elm_playground$Playground$scale,
+								3,
+								A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '読み込み中')),
+								A2(
+								$evancz$elm_playground$Playground$moveY,
+								-500,
+								$evancz$elm_playground$Playground$group(
+									_List_fromArray(
+										[
+											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-up.png'),
+											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-down.png'),
+											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/pipe.png'),
+											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanipu.png'),
+											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanikama.png')
+										])))
+							]);
 					case 0:
 						return _List_fromArray(
 							[
@@ -7742,7 +7774,7 @@ var $author$project$Main$view = F2(
 								$evancz$elm_playground$Playground$moveY,
 								20,
 								A2($author$project$Main$viewStatusText, computer.f.Y, 'ゲームオーバー!')),
-								A2($author$project$Main$viewPoints, computer, info.t)
+								A2($author$project$Main$viewPoints, computer, info.u)
 							]);
 				}
 			}());
