@@ -10,3 +10,4 @@
 * [patra](https://static.zerochan.net/Suou.Patra.full.2402502.png)
 * [pipe](https://toppng.com/public/uploads/thumbnail/flappy-bird-pipe-transparent-11549930651arxp9eyzqz.png)
 * [kanipu](https://pbs.twimg.com/media/EfRPC-qUcAIKPAb.jpg:small)
+* [rotate](http://simpleicon.com/wp-content/uploads/refresh.png)

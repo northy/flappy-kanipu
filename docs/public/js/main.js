@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ah.O === region.am.O)
+	if (region.ai.O === region.an.O)
 	{
-		return 'on line ' + region.ah.O;
+		return 'on line ' + region.ai.O;
 	}
-	return 'on lines ' + region.ah.O + ' through ' + region.am.O;
+	return 'on lines ' + region.ai.O + ' through ' + region.an.O;
 }
 
 
@@ -1857,7 +1857,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aq,
+		impl.ar,
 		impl.aI,
 		impl.a4,
 		function() { return function() {} }
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		s: func(record.s),
-		ai: record.ai,
-		ae: record.ae
+		t: func(record.t),
+		aj: record.aj,
+		af: record.af
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ai;
+		var message = !tag ? value : tag < 3 ? value.a : value.t;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aj;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.ae) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.af) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,7 +3928,7 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aq,
+		impl.ar,
 		impl.aI,
 		impl.a4,
 		function(sendToApp, initialModel) {
@@ -3964,11 +3964,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aq,
+		impl.ar,
 		impl.aI,
 		impl.a4,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.af && impl.af(sendToApp)
+			var divertHrefToApp = impl.ag && impl.ag(sendToApp)
 			var view = impl.aJ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4043,7 +4043,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		af: function(sendToApp)
+		ag: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aA === next.aA
-							&& curr.ap === next.ap
-							&& curr.ax.a === next.ax.a
+							&& curr.aB === next.aB
+							&& curr.aq === next.aq
+							&& curr.ay.a === next.ay.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,9 +4069,9 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aq: function(flags)
+		ar: function(flags)
 		{
-			return A3(impl.aq, flags, _Browser_getUrl(), key);
+			return A3(impl.ar, flags, _Browser_getUrl(), key);
 		},
 		aJ: impl.aJ,
 		aI: impl.aI,
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aE: _Browser_getScene(),
+		aF: _Browser_getScene(),
 		aK: {
 			L: _Browser_window.pageXOffset,
 			w: _Browser_window.pageYOffset,
-			Y: _Browser_doc.documentElement.clientWidth,
-			N: _Browser_doc.documentElement.clientHeight
+			X: _Browser_doc.documentElement.clientWidth,
+			r: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		Y: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		N: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		X: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		r: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aE: {
-				Y: node.scrollWidth,
-				N: node.scrollHeight
+			aF: {
+				X: node.scrollWidth,
+				r: node.scrollHeight
 			},
 			aK: {
 				L: node.scrollLeft,
 				w: node.scrollTop,
-				Y: node.clientWidth,
-				N: node.clientHeight
+				X: node.clientWidth,
+				r: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aE: _Browser_getScene(),
+			aF: _Browser_getScene(),
 			aK: {
 				L: x,
 				w: y,
-				Y: _Browser_doc.documentElement.clientWidth,
-				N: _Browser_doc.documentElement.clientHeight
+				X: _Browser_doc.documentElement.clientWidth,
+				r: _Browser_doc.documentElement.clientHeight
 			},
 			aQ: {
 				L: x + rect.left,
 				w: y + rect.top,
-				Y: rect.width,
-				N: rect.height
+				X: rect.width,
+				r: rect.height
 			}
 		};
 	});
@@ -4907,7 +4907,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ao: fragment, ap: host, av: path, ax: port_, aA: protocol, aB: query};
+		return {ap: fragment, aq: host, aw: path, ay: port_, aB: protocol, aC: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5213,7 +5213,7 @@ var $elm$browser$Browser$AnimationManager$Time = function (a) {
 };
 var $elm$browser$Browser$AnimationManager$State = F3(
 	function (subs, request, oldTime) {
-		return {ad: oldTime, aD: request, aF: subs};
+		return {ae: oldTime, aE: request, aG: subs};
 	});
 var $elm$browser$Browser$AnimationManager$init = $elm$core$Task$succeed(
 	A3($elm$browser$Browser$AnimationManager$State, _List_Nil, $elm$core$Maybe$Nothing, 0));
@@ -5224,8 +5224,8 @@ var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var $elm$core$Process$spawn = _Scheduler_spawn;
 var $elm$browser$Browser$AnimationManager$onEffects = F3(
 	function (router, subs, _v0) {
-		var request = _v0.aD;
-		var oldTime = _v0.ad;
+		var request = _v0.aE;
+		var oldTime = _v0.ae;
 		var _v1 = _Utils_Tuple2(request, subs);
 		if (_v1.a.$ === 1) {
 			if (!_v1.b.b) {
@@ -5273,8 +5273,8 @@ var $elm$time$Time$Posix = $elm$core$Basics$identity;
 var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$browser$Browser$AnimationManager$onSelfMsg = F3(
 	function (router, newTime, _v0) {
-		var subs = _v0.aF;
-		var oldTime = _v0.ad;
+		var subs = _v0.aG;
+		var oldTime = _v0.ae;
 		var send = function (sub) {
 			if (!sub.$) {
 				var tagger = sub.a;
@@ -5347,7 +5347,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {aw: pids, aF: subs};
+		return {ax: pids, aG: subs};
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5578,7 +5578,7 @@ var $elm$core$Dict$merge = F6(
 	});
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {an: event, ar: key};
+		return {ao: event, as: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -5652,7 +5652,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.aw,
+			state.ax,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -5698,8 +5698,8 @@ var $elm$core$List$filterMap = F2(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.ar;
-		var event = _v0.an;
+		var key = _v0.as;
+		var event = _v0.ao;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -5708,7 +5708,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.aF);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.aG);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -5815,17 +5815,17 @@ var $evancz$elm_playground$Playground$gameSubscriptions = $elm$core$Platform$Sub
 		]));
 var $evancz$elm_playground$Playground$Mouse = F4(
 	function (x, y, down, click) {
-		return {_: click, aP: down, L: x, w: y};
+		return {aa: click, aP: down, L: x, w: y};
 	});
 var $evancz$elm_playground$Playground$Time = $elm$core$Basics$identity;
 var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
 var $elm$core$Set$empty = $elm$core$Dict$empty;
-var $evancz$elm_playground$Playground$emptyKeyboard = {Z: false, aP: false, aa: false, g: $elm$core$Set$empty, ab: false, a$: false, ag: false, a1: false, a6: false};
+var $evancz$elm_playground$Playground$emptyKeyboard = {Z: false, aP: false, ab: false, g: $elm$core$Set$empty, ac: false, a$: false, ah: false, a1: false, a7: false};
 var $evancz$elm_playground$Playground$mouseClick = F2(
 	function (bool, mouse) {
 		return _Utils_update(
 			mouse,
-			{_: bool});
+			{aa: bool});
 	});
 var $evancz$elm_playground$Playground$mouseDown = F2(
 	function (bool, mouse) {
@@ -5844,7 +5844,7 @@ var $elm$core$Basics$negate = function (n) {
 };
 var $evancz$elm_playground$Playground$toScreen = F2(
 	function (width, height) {
-		return {W: (-height) / 2, N: height, ab: (-width) / 2, a$: width / 2, aH: height / 2, Y: width};
+		return {_: (-height) / 2, r: height, ac: (-width) / 2, a$: width / 2, a6: height / 2, X: width};
 	});
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
@@ -6229,11 +6229,11 @@ var $evancz$elm_playground$Playground$updateKeyboard = F3(
 			case 'Enter':
 				return _Utils_update(
 					keyboard,
-					{aa: isDown, g: keys});
+					{ab: isDown, g: keys});
 			case 'Shift':
 				return _Utils_update(
 					keyboard,
-					{g: keys, ag: isDown});
+					{g: keys, ah: isDown});
 			case 'Backspace':
 				return _Utils_update(
 					keyboard,
@@ -6241,7 +6241,7 @@ var $evancz$elm_playground$Playground$updateKeyboard = F3(
 			case 'ArrowUp':
 				return _Utils_update(
 					keyboard,
-					{g: keys, a6: isDown});
+					{g: keys, a7: isDown});
 			case 'ArrowDown':
 				return _Utils_update(
 					keyboard,
@@ -6249,7 +6249,7 @@ var $evancz$elm_playground$Playground$updateKeyboard = F3(
 			case 'ArrowLeft':
 				return _Utils_update(
 					keyboard,
-					{g: keys, ab: isDown});
+					{g: keys, ac: isDown});
 			case 'ArrowRight':
 				return _Utils_update(
 					keyboard,
@@ -6272,14 +6272,14 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					$evancz$elm_playground$Playground$Game,
 					vis,
 					A2(updateMemory, computer, memory),
-					computer.aU._ ? _Utils_update(
+					computer.aU.aa ? _Utils_update(
 						computer,
 						{
 							aU: A2($evancz$elm_playground$Playground$mouseClick, false, computer.aU),
-							X: time
+							Y: time
 						}) : _Utils_update(
 						computer,
-						{X: time}));
+						{Y: time}));
 			case 2:
 				var viewport = msg.a.aK;
 				return A3(
@@ -6289,7 +6289,7 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					_Utils_update(
 						computer,
 						{
-							f: A2($evancz$elm_playground$Playground$toScreen, viewport.Y, viewport.N)
+							e: A2($evancz$elm_playground$Playground$toScreen, viewport.X, viewport.r)
 						}));
 			case 3:
 				var w = msg.a;
@@ -6301,7 +6301,7 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					_Utils_update(
 						computer,
 						{
-							f: A2($evancz$elm_playground$Playground$toScreen, w, h)
+							e: A2($evancz$elm_playground$Playground$toScreen, w, h)
 						}));
 			case 0:
 				var isDown = msg.a;
@@ -6313,13 +6313,13 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					_Utils_update(
 						computer,
 						{
-							as: A3($evancz$elm_playground$Playground$updateKeyboard, isDown, key, computer.as)
+							at: A3($evancz$elm_playground$Playground$updateKeyboard, isDown, key, computer.at)
 						}));
 			case 5:
 				var pageX = msg.a;
 				var pageY = msg.b;
-				var y = computer.f.aH - pageY;
-				var x = computer.f.ab + pageX;
+				var y = computer.e.a6 - pageY;
+				var x = computer.e.ac + pageX;
 				return A3(
 					$evancz$elm_playground$Playground$Game,
 					vis,
@@ -6359,17 +6359,17 @@ var $evancz$elm_playground$Playground$gameUpdate = F3(
 					_Utils_update(
 						computer,
 						{
-							as: $evancz$elm_playground$Playground$emptyKeyboard,
+							at: $evancz$elm_playground$Playground$emptyKeyboard,
 							aU: A4($evancz$elm_playground$Playground$Mouse, computer.aU.L, computer.aU.w, false, false)
 						}));
 		}
 	});
 var $elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
 var $evancz$elm_playground$Playground$initialComputer = {
-	as: $evancz$elm_playground$Playground$emptyKeyboard,
+	at: $evancz$elm_playground$Playground$emptyKeyboard,
 	aU: A4($evancz$elm_playground$Playground$Mouse, 0, 0, false, false),
-	f: A2($evancz$elm_playground$Playground$toScreen, 600, 600),
-	X: $elm$time$Time$millisToPosix(0)
+	e: A2($evancz$elm_playground$Playground$toScreen, 600, 600),
+	Y: $elm$time$Time$millisToPosix(0)
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -6674,10 +6674,10 @@ var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $evancz$elm_playground$Playground$render = F2(
 	function (screen, shapes) {
-		var y = $elm$core$String$fromFloat(screen.W);
-		var x = $elm$core$String$fromFloat(screen.ab);
-		var w = $elm$core$String$fromFloat(screen.Y);
-		var h = $elm$core$String$fromFloat(screen.N);
+		var y = $elm$core$String$fromFloat(screen._);
+		var x = $elm$core$String$fromFloat(screen.ac);
+		var w = $elm$core$String$fromFloat(screen.X);
+		var h = $elm$core$String$fromFloat(screen.r);
 		return A2(
 			$elm$svg$Svg$svg,
 			_List_fromArray(
@@ -6701,7 +6701,7 @@ var $evancz$elm_playground$Playground$game = F3(
 					[
 						A2(
 						$evancz$elm_playground$Playground$render,
-						computer.f,
+						computer.e,
 						A2(viewMemory, computer, memory))
 					]),
 				a5: 'Playground'
@@ -6727,23 +6727,20 @@ var $evancz$elm_playground$Playground$game = F3(
 				A2($elm$core$Task$perform, $evancz$elm_playground$Playground$GotViewport, $elm$browser$Browser$Dom$getViewport));
 		};
 		return $elm$browser$Browser$document(
-			{aq: init, a4: subscriptions, aI: update, aJ: view});
+			{ar: init, a4: subscriptions, aI: update, aJ: view});
 	});
 var $author$project$Main$Loading = function (a) {
 	return {$: 1, a: a};
 };
 var $author$project$Main$init = $author$project$Main$Loading(
-	{r: 0});
-var $author$project$Main$GameOver = function (a) {
-	return {$: 2, a: a};
-};
+	{s: 0});
 var $author$project$Main$Running = function (a) {
-	return {$: 3, a: a};
+	return {$: 2, a: a};
 };
 var $author$project$Main$Waiting = {$: 0};
 var $author$project$Main$Pipe = F2(
 	function (x, height) {
-		return {N: height, L: x};
+		return {r: height, L: x};
 	});
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Basics$sqrt = _Basics_sqrt;
@@ -7336,14 +7333,36 @@ var $elm$core$List$head = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
+var $author$project$Main$originalX = 1536;
+var $author$project$Main$propX = function (computer) {
+	return computer.e.X / $author$project$Main$originalX;
+};
+var $author$project$Main$scaleX = F2(
+	function (computer, x) {
+		return x * $author$project$Main$propX(computer);
+	});
+var $author$project$Main$originalY = 758;
+var $author$project$Main$propY = function (computer) {
+	return computer.e.r / $author$project$Main$originalY;
+};
+var $author$project$Main$scaleY = F2(
+	function (computer, y) {
+		return y * $author$project$Main$propY(computer);
+	});
 var $author$project$Main$checkPipeCollision = F3(
 	function (computer, patra, pipes) {
 		var lastpipe = $elm$core$List$head(pipes);
-		var l = computer.f.ab;
-		var gate = 120;
+		var l = computer.e.ac;
+		var gate = A2($author$project$Main$scaleY, computer, 120);
 		if (!lastpipe.$) {
 			var pipe = lastpipe.a;
-			return (_Utils_cmp(pipe.L, l + 160) < 1) && ((_Utils_cmp(patra.w, (pipe.N + gate) - 50) > -1) || (_Utils_cmp(patra.w, (pipe.N - gate) + 50) < 1));
+			return (_Utils_cmp(
+				pipe.L,
+				l + A2($author$project$Main$scaleY, computer, 160)) < 1) && ((_Utils_cmp(
+				patra.w + A2($author$project$Main$scaleY, computer, 50),
+				A2($author$project$Main$scaleX, computer, pipe.r) + gate) > -1) || (_Utils_cmp(
+				patra.w - A2($author$project$Main$scaleY, computer, 50),
+				A2($author$project$Main$scaleX, computer, pipe.r) - gate) < 1));
 		} else {
 			return false;
 		}
@@ -7361,17 +7380,20 @@ var $elm$core$List$filter = F2(
 	});
 var $author$project$Main$checkPipes = F2(
 	function (computer, pipes) {
-		var l = computer.f.ab;
+		var l = computer.e.ac;
 		return A2(
 			$elm$core$List$filter,
 			function (x) {
-				return _Utils_cmp(x.L, l - 60) > 0;
+				return _Utils_cmp(
+					x.L,
+					l - A2($author$project$Main$scaleX, computer, 100)) > 0;
 			},
 			pipes);
 	});
 var $author$project$Main$initRun = $author$project$Main$Running(
 	{
-		r: 1000,
+		N: true,
+		s: 1000,
 		o: {K: 0, w: 0},
 		R: _List_fromArray(
 			[
@@ -7392,7 +7414,7 @@ var $author$project$Main$initRun = $author$project$Main$Running(
 				3300,
 				$author$project$Main$getNoise(1000) * 300)
 			]),
-		u: 0
+		S: 0
 	});
 var $elm$core$Basics$min = F2(
 	function (x, y) {
@@ -7400,50 +7422,58 @@ var $elm$core$Basics$min = F2(
 	});
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Main$press = function (computer) {
-	return computer.as.a1 || (computer.aU.aP || computer.as.a6);
+	return computer.at.a1 || (computer.aU.aP || computer.at.a7);
 };
 var $author$project$Main$update = F2(
 	function (computer, model) {
 		switch (model.$) {
-			case 3:
+			case 2:
 				var run = model.a;
-				var top = computer.f.aH - 70;
-				var speed = (10 * computer.f.Y) / 1000;
-				var list = A2(
-					$author$project$Main$checkPipes,
-					computer,
-					A2(
-						$elm$core$List$map,
-						function (pipe) {
-							return _Utils_update(
-								pipe,
-								{L: pipe.L - speed});
-						},
-						run.R));
-				var pipes = A2($author$project$Main$addPipes, run.r, list);
-				var score = ($elm$core$List$length(list) < 4) ? (run.u + 1) : run.u;
-				var dt = 1.666;
-				var bot = computer.f.W + 100;
-				var vy = ($author$project$Main$press(computer) && (run.o.K < 2.5)) ? 5 : ((_Utils_cmp(run.o.w, bot) > 0) ? (run.o.K - (dt / 8)) : 0);
-				var y = A2(
-					$elm$core$Basics$max,
-					bot,
-					A2($elm$core$Basics$min, top, run.o.w) + (dt * vy));
-				var collision = _Utils_eq(y, bot) || A3($author$project$Main$checkPipeCollision, computer, run.o, run.R);
-				return (!collision) ? $author$project$Main$Running(
-					{
-						r: run.r + 1,
-						o: {K: vy, w: y},
-						R: pipes,
-						u: score
-					}) : $author$project$Main$GameOver(
-					{u: run.u});
+				if (_Utils_cmp(computer.e.X, computer.e.r) > -1) {
+					var top = computer.e.a6 - 70;
+					var speed = (10 * computer.e.X) / 1000;
+					var pressed = $author$project$Main$press(computer);
+					var list = A2(
+						$author$project$Main$checkPipes,
+						computer,
+						A2(
+							$elm$core$List$map,
+							function (pipe) {
+								return _Utils_update(
+									pipe,
+									{L: pipe.L - speed});
+							},
+							run.R));
+					var pipes = A2($author$project$Main$addPipes, run.s, list);
+					var score = ($elm$core$List$length(list) < 4) ? (run.S + 1) : run.S;
+					var dt = A2($author$project$Main$scaleY, computer, 1.666);
+					var bot = computer.e._ + A2($author$project$Main$scaleY, computer, 50);
+					var vy = (pressed && (run.o.K < 2.5)) ? 5 : ((_Utils_cmp(run.o.w, bot) > 0) ? (run.o.K - (dt / 8)) : 0);
+					var y = A2($elm$core$Basics$min, top, run.o.w) + (dt * vy);
+					var collision = (_Utils_cmp(
+						y - A2($author$project$Main$scaleY, computer, 50),
+						bot) < 0) || A3($author$project$Main$checkPipeCollision, computer, run.o, run.R);
+					var alive = run.N && (!collision);
+					return alive ? $author$project$Main$Running(
+						{
+							N: alive,
+							s: run.s + 1,
+							o: {K: vy, w: y},
+							R: pipes,
+							S: score
+						}) : (pressed ? $author$project$Main$initRun : $author$project$Main$Running(
+						_Utils_update(
+							run,
+							{N: false})));
+				} else {
+					return model;
+				}
 			case 1:
 				var load = model.a;
-				return (load.r === 50) ? $author$project$Main$Waiting : $author$project$Main$Loading(
+				return (load.s === 50) ? $author$project$Main$Waiting : $author$project$Main$Loading(
 					_Utils_update(
 						load,
-						{r: load.r + 1}));
+						{s: load.s + 1}));
 			default:
 				return $author$project$Main$press(computer) ? $author$project$Main$initRun : model;
 		}
@@ -7553,9 +7583,9 @@ var $evancz$elm_playground$Playground$rgb = F3(
 			$evancz$elm_playground$Playground$colorClamp(b));
 	});
 var $author$project$Main$viewBackground = function (computer) {
-	var w = computer.f.Y;
-	var h = computer.f.N;
-	var b = computer.f.W;
+	var w = computer.e.X;
+	var h = computer.e.r;
+	var b = computer.e._;
 	return _List_fromArray(
 		[
 			A3(
@@ -7570,7 +7600,7 @@ var $author$project$Main$viewBackground = function (computer) {
 				$evancz$elm_playground$Playground$rectangle,
 				A3($evancz$elm_playground$Playground$rgb, 74, 163, 41),
 				w,
-				100))
+				A2($author$project$Main$scaleY, computer, 100)))
 		]);
 };
 var $evancz$elm_playground$Playground$rotate = F2(
@@ -7585,25 +7615,37 @@ var $evancz$elm_playground$Playground$rotate = F2(
 	});
 var $author$project$Main$viewPipes = F3(
 	function (computer, x, y) {
-		var t = computer.f.aH;
-		var gate = 120;
-		var b = computer.f.W;
+		var gate = A2($author$project$Main$scaleY, computer, 120);
 		return $evancz$elm_playground$Playground$group(
 			_List_fromArray(
 				[
-					A3(
-					$evancz$elm_playground$Playground$move,
-					x,
-					((t - 80) + y) + gate,
 					A2(
-						$evancz$elm_playground$Playground$rotate,
-						180,
-						A3($evancz$elm_playground$Playground$image, 160, 800, 'public/img/pipe.png'))),
+					$evancz$elm_playground$Playground$scale,
+					0.8,
 					A3(
-					$evancz$elm_playground$Playground$move,
-					x,
-					((b + 80) + y) - gate,
-					A3($evancz$elm_playground$Playground$image, 160, 800, 'public/img/pipe.png'))
+						$evancz$elm_playground$Playground$move,
+						x,
+						(A2($author$project$Main$scaleY, computer, y) + (A2($author$project$Main$scaleY, computer, 1000) * 0.8)) + gate,
+						A2(
+							$evancz$elm_playground$Playground$rotate,
+							180,
+							A3(
+								$evancz$elm_playground$Playground$image,
+								A2($author$project$Main$scaleX, computer, 200),
+								A2($author$project$Main$scaleY, computer, 2000),
+								'public/img/pipe.png')))),
+					A2(
+					$evancz$elm_playground$Playground$scale,
+					0.8,
+					A3(
+						$evancz$elm_playground$Playground$move,
+						x,
+						(A2($author$project$Main$scaleY, computer, y) - (A2($author$project$Main$scaleY, computer, 1000) * 0.8)) - gate,
+						A3(
+							$evancz$elm_playground$Playground$image,
+							A2($author$project$Main$scaleX, computer, 200),
+							A2($author$project$Main$scaleY, computer, 2000),
+							'public/img/pipe.png')))
 				]));
 	});
 var $evancz$elm_playground$Playground$moveDown = F2(
@@ -7644,25 +7686,29 @@ var $evancz$elm_playground$Playground$words = F2(
 	});
 var $author$project$Main$viewPoints = F2(
 	function (computer, points) {
-		var r = computer.f.a$;
-		var b = computer.f.W;
+		var r = computer.e.a$;
+		var b = computer.e._;
 		return A2(
 			$evancz$elm_playground$Playground$scale,
-			2,
+			A2($author$project$Main$scaleY, computer, 2),
 			A3(
 				$evancz$elm_playground$Playground$move,
-				r - 150,
-				b + 50,
+				r - A2($author$project$Main$scaleX, computer, 150),
+				b + A2($author$project$Main$scaleY, computer, 50),
 				$evancz$elm_playground$Playground$group(
 					_List_fromArray(
 						[
-							A3($evancz$elm_playground$Playground$image, 50, 50, 'public/img/kanikama.png'),
+							A3(
+							$evancz$elm_playground$Playground$image,
+							A2($author$project$Main$scaleX, computer, 50),
+							A2($author$project$Main$scaleY, computer, 50),
+							'public/img/kanikama.png'),
 							A2(
 							$evancz$elm_playground$Playground$moveDown,
-							10,
+							A2($author$project$Main$scaleY, computer, 10),
 							A2(
 								$evancz$elm_playground$Playground$moveRight,
-								50,
+								A2($author$project$Main$scaleX, computer, 50),
 								A2(
 									$evancz$elm_playground$Playground$words,
 									$evancz$elm_playground$Playground$black,
@@ -7670,112 +7716,111 @@ var $author$project$Main$viewPoints = F2(
 						]))));
 	});
 var $author$project$Main$viewStatusText = F2(
-	function (width, status) {
-		return A2(
-			$evancz$elm_playground$Playground$moveY,
-			(width >= 1000) ? (-35) : 0,
-			$evancz$elm_playground$Playground$group(
-				_List_fromArray(
-					[
-						A2(
-						$evancz$elm_playground$Playground$moveY,
-						150,
-						A3($evancz$elm_playground$Playground$image, 200, 200, 'public/img/kanikama.png')),
-						A2(
+	function (computer, status) {
+		return $evancz$elm_playground$Playground$group(
+			_List_fromArray(
+				[
+					A2(
+					$evancz$elm_playground$Playground$moveY,
+					A2($author$project$Main$scaleY, computer, 150),
+					A3(
+						$evancz$elm_playground$Playground$image,
+						A2($author$project$Main$scaleX, computer, 200),
+						A2($author$project$Main$scaleY, computer, 200),
+						'public/img/kanikama.png')),
+					A2(
+					$evancz$elm_playground$Playground$scale,
+					A2($author$project$Main$scaleY, computer, 3),
+					A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, status)),
+					A2(
+					$evancz$elm_playground$Playground$moveY,
+					A2($author$project$Main$scaleY, computer, -70),
+					A2(
 						$evancz$elm_playground$Playground$scale,
-						3,
-						A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, status)),
-						(width >= 1000) ? A2(
-						$evancz$elm_playground$Playground$moveY,
-						-70,
-						A2(
-							$evancz$elm_playground$Playground$scale,
-							3,
-							A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '続けるには上矢印キーを押してください...'))) : $evancz$elm_playground$Playground$group(
-						_List_fromArray(
-							[
-								A2(
-								$evancz$elm_playground$Playground$moveY,
-								-70,
-								A2(
-									$evancz$elm_playground$Playground$scale,
-									3,
-									A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '続けるには上矢印キー'))),
-								A2(
-								$evancz$elm_playground$Playground$moveY,
-								-140,
-								A2(
-									$evancz$elm_playground$Playground$scale,
-									3,
-									A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, 'を押してください...')))
-							]))
-					])));
+						A2($author$project$Main$scaleY, computer, 3),
+						A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '続けるには上矢印キーを押してください...')))
+				]));
 	});
 var $author$project$Main$view = F2(
 	function (computer, model) {
 		return _Utils_ap(
 			$author$project$Main$viewBackground(computer),
 			function () {
-				switch (model.$) {
-					case 3:
-						var run = model.a;
-						var l = computer.f.ab;
-						return _Utils_ap(
-							A2(
-								$elm$core$List$map,
-								function (pipe) {
-									return A3($author$project$Main$viewPipes, computer, pipe.L, pipe.N);
-								},
-								run.R),
-							_List_fromArray(
-								[
-									A3(
-									$evancz$elm_playground$Playground$move,
-									l + 60,
-									run.o.w,
-									A3(
-										$evancz$elm_playground$Playground$image,
-										100,
-										100,
-										$author$project$Main$toGif(run.o))),
-									A2($author$project$Main$viewPoints, computer, run.u)
-								]));
-					case 1:
-						var load = model.a;
-						return _List_fromArray(
-							[
+				if (_Utils_cmp(computer.e.X, computer.e.r) > -1) {
+					switch (model.$) {
+						case 2:
+							var run = model.a;
+							var l = computer.e.ac;
+							return _Utils_ap(
 								A2(
-								$evancz$elm_playground$Playground$scale,
-								3,
-								A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '読み込み中')),
-								A2(
-								$evancz$elm_playground$Playground$moveY,
-								-500,
-								$evancz$elm_playground$Playground$group(
+									$elm$core$List$map,
+									function (pipe) {
+										return A3($author$project$Main$viewPipes, computer, pipe.L, pipe.r);
+									},
+									run.R),
+								_Utils_ap(
 									_List_fromArray(
 										[
-											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-up.png'),
-											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-down.png'),
-											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/pipe.png'),
-											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanipu.png'),
-											A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanikama.png')
-										])))
-							]);
-					case 0:
-						return _List_fromArray(
-							[
-								A2($author$project$Main$viewStatusText, computer.f.Y, 'こんばんわんわん!')
-							]);
-					default:
-						var info = model.a;
-						return _List_fromArray(
-							[
-								A2(
-								$evancz$elm_playground$Playground$moveY,
-								20,
-								A2($author$project$Main$viewStatusText, computer.f.Y, 'ゲームオーバー!')),
-								A2($author$project$Main$viewPoints, computer, info.u)
-							]);
+											A3(
+											$evancz$elm_playground$Playground$move,
+											l + A2($author$project$Main$scaleX, computer, 60),
+											run.o.w,
+											A3(
+												$evancz$elm_playground$Playground$image,
+												A2($author$project$Main$scaleX, computer, 100),
+												A2($author$project$Main$scaleY, computer, 100),
+												$author$project$Main$toGif(run.o))),
+											A2($author$project$Main$viewPoints, computer, run.S)
+										]),
+									(!run.N) ? _List_fromArray(
+										[
+											A2(
+											$evancz$elm_playground$Playground$moveY,
+											20,
+											A2($author$project$Main$viewStatusText, computer, 'ゲームオーバー!'))
+										]) : _List_Nil));
+						case 1:
+							return _List_fromArray(
+								[
+									A2(
+									$evancz$elm_playground$Playground$scale,
+									A2($author$project$Main$scaleY, computer, 3),
+									A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '読み込み中')),
+									A2(
+									$evancz$elm_playground$Playground$moveY,
+									-500,
+									$evancz$elm_playground$Playground$group(
+										_List_fromArray(
+											[
+												A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-up.png'),
+												A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/patra-down.png'),
+												A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/pipe.png'),
+												A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanipu.png'),
+												A3($evancz$elm_playground$Playground$image, 1, 1, 'public/img/kanikama.png')
+											])))
+								]);
+						default:
+							return _List_fromArray(
+								[
+									A2($author$project$Main$viewStatusText, computer, 'こんばんわんわん!')
+								]);
+					}
+				} else {
+					return _List_fromArray(
+						[
+							A2(
+							$evancz$elm_playground$Playground$moveY,
+							A2($author$project$Main$scaleY, computer, 150),
+							A3(
+								$evancz$elm_playground$Playground$image,
+								A2($author$project$Main$scaleX, computer, 200),
+								A2($author$project$Main$scaleY, computer, 200),
+								'public/img/rotate.png')),
+							A2(
+							$evancz$elm_playground$Playground$scale,
+							A2($author$project$Main$scaleY, computer, 3),
+							A2($evancz$elm_playground$Playground$words, $evancz$elm_playground$Playground$black, '画面を回してください'))
+						]);
 				}
 			}());
 	});
