@@ -134,7 +134,7 @@ update computer model =
                     dt = (scaleY computer 1.666)
                     pressed = press computer
                     vy =
-                        if pressed && (run.patra.vy<2.5) then (scaleY computer 5)
+                        if pressed && (run.patra.vy < (scaleY computer 2.5)) then (scaleY computer 5)
                         else
                             if run.patra.y>bot then run.patra.vy - dt / 8 else 0
                     y = min top run.patra.y + dt * vy
