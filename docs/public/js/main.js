@@ -7448,7 +7448,7 @@ var $author$project$Main$update = F2(
 					var score = ($elm$core$List$length(list) < 4) ? (run.S + 1) : run.S;
 					var dt = A2($author$project$Main$scaleY, computer, 1.666);
 					var bot = computer.e._ + A2($author$project$Main$scaleY, computer, 50);
-					var vy = (pressed && (run.o.K < 2.5)) ? 5 : ((_Utils_cmp(run.o.w, bot) > 0) ? (run.o.K - (dt / 8)) : 0);
+					var vy = (pressed && (run.o.K < 2.5)) ? A2($author$project$Main$scaleY, computer, 5) : ((_Utils_cmp(run.o.w, bot) > 0) ? (run.o.K - (dt / 8)) : 0);
 					var y = A2($elm$core$Basics$min, top, run.o.w) + (dt * vy);
 					var collision = (_Utils_cmp(
 						y - A2($author$project$Main$scaleY, computer, 50),
@@ -7544,9 +7544,12 @@ var $evancz$elm_playground$Playground$scale = F2(
 		var f = _v0.f;
 		return A6($evancz$elm_playground$Playground$Shape, x, y, a, s * ns, o, f);
 	});
-var $author$project$Main$toGif = function (patra) {
-	return (patra.K >= 3) ? 'public/img/patra-up.png' : 'public/img/patra-down.png';
-};
+var $author$project$Main$toGif = F2(
+	function (computer, patra) {
+		return (_Utils_cmp(
+			patra.K,
+			A2($author$project$Main$scaleY, computer, 3)) > -1) ? 'public/img/patra-up.png' : 'public/img/patra-down.png';
+	});
 var $evancz$elm_playground$Playground$Rectangle = F3(
 	function (a, b, c) {
 		return {$: 2, a: a, b: b, c: c};
@@ -7769,7 +7772,7 @@ var $author$project$Main$view = F2(
 												$evancz$elm_playground$Playground$image,
 												A2($author$project$Main$scaleX, computer, 100),
 												A2($author$project$Main$scaleY, computer, 100),
-												$author$project$Main$toGif(run.o))),
+												A2($author$project$Main$toGif, computer, run.o))),
 											A2($author$project$Main$viewPoints, computer, run.S)
 										]),
 									(!run.N) ? _List_fromArray(

@@ -134,7 +134,7 @@ update computer model =
                     dt = (scaleY computer 1.666)
                     pressed = press computer
                     vy =
-                        if pressed && (run.patra.vy<2.5) then 5
+                        if pressed && (run.patra.vy<2.5) then (scaleY computer 5)
                         else
                             if run.patra.y>bot then run.patra.vy - dt / 8 else 0
                     y = min top run.patra.y + dt * vy
@@ -180,7 +180,7 @@ view computer model =
                     l = computer.screen.left
                 in
                     List.map (\pipe -> viewPipes computer pipe.x pipe.height) run.pipes ++
-                    [ image (scaleX computer 100) (scaleY computer 100) (toGif run.patra)
+                    [ image (scaleX computer 100) (scaleY computer 100) (toGif computer run.patra)
                         |> move (l + (scaleX computer 60)) (run.patra.y)
                     , viewPoints computer run.score
                     ]
@@ -210,9 +210,9 @@ view computer model =
             |> scale (scaleY computer 3)
         ]
 
-toGif : Patra -> String
-toGif patra =
-    if patra.vy >= 3 then
+toGif : Computer -> Patra -> String
+toGif computer patra =
+    if patra.vy >= (scaleY computer 3) then
         "public/img/patra-up.png"
     else
         "public/img/patra-down.png"
